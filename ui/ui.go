@@ -184,8 +184,6 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// Ancora va fatta la porzione di codice che si occupa di gestire le risposte ai file statici.
-
 // Funzione di supporto utilizzata per individuare il metodo di Page da
 // richiamare per ottenere i Tags.
 func pathToMethod(path string) string {

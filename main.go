@@ -22,16 +22,16 @@ func main() {
 	}
 
 	// Crea un handler che si occuperà di gestire le richieste ai file statici,
-	// andando a cercare i file partendo dalla cartella assets.
+	// andando a cercare i file partendo dalla cartella "ui/assets".
 	fs := http.FileServer(http.Dir("ui/assets"))
 
 	// Aggiungi al multiplexer i casi in cui le richieste avvengano a file css o
 	// js, facendo gestire tali richieste al fileserver, il quale servirà i file
 	// specificati dalla URL direttamente, senza ulteriori steps. Il risultato è
 	// che il path della URL delle richieste viene aggiunto a partire dalla
-	// cartella statics, per cercare il file richiesto. Esempio --> GET
+	// cartella ui/assets, per cercare il file richiesto. Esempio --> GET
 	// https://<domain.com>/css/base.css sarà servito con il contenuto di
-	// <root>/assets/css/base.css.
+	// <root>/ui/assets + /css/base.css.
 	mux.Handle("/css/", fs)
 	mux.Handle("/js/", fs)
 
