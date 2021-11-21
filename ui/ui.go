@@ -43,6 +43,33 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 		urlPath += "index.html"
 	}
 
+	// Controlla se la richiesta è arrivata da javascript (il tal caso possiede
+	// il cookie from-js).
+	isFromJs := false
+	for _, cookie := range req.Cookies() {
+		if cookie.Name == "is-from-js" {
+			isFromJs = true
+		}
+	}
+
+	// Se la richiesta non è arrivata da javascript, allora l'utente non è
+	// dentro all'applicazione, quindi va inviato l'intero layout insieme ad
+	// initializer.js e non il singolo componente da innestare.
+	if !isFromJs {
+		fsys := os.DirFS("ui/assets")
+		template, err := scriggo.BuildTemplate(fsys, "layout.html", nil)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		err = template.Run(res, nil, nil)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		return
+	}
+
 	// Prendi la parte finale della URL, ovvero quella corrispondente al file.
 	var _, fileName = path.Split(urlPath)
 
@@ -59,7 +86,9 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 		var method = reflect.ValueOf(page).MethodByName(pathToMethod(fileName))
 
 		// Se non esiste alcun metodo con quel nome, allora restituisci una
-		// risposta 404.
+		// risposta 404. NOTA: ESSENDO GIà STATO CARICATO IL LAYOUT, SE IL
+		// METODO NON ESISTE DOBBIAMO COMUNQUE PASSARGLI UN COMPONENTE CHE DICA
+		// IL MESSAGGIO 404 ALL'UTENTE.
 		if !method.IsValid() {
 			http.NotFound(res, req)
 			return
