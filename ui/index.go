@@ -4,6 +4,6 @@ import "net/http"
 
 func (p *Page) Index(res http.ResponseWriter, req *http.Request) Tags {
 	return map[string]interface{}{
-		"variabile": "Questa è la homepage",
+		"title": "Cerca le tue ricette preferite",
 	}
 }

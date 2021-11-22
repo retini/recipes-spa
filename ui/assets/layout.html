@@ -22,20 +22,20 @@
 <body>
     <div class="header">
         <div class="logo-box">
-            <a href="/" class="linkto" id="logo-link">
-                <img src="/img/logo.png" alt="" id="menu-logo">
-                <span id="menu-title">Recipes</span>
+            <a href="/index.html" class="link" id="logo-link">
+                <img src="/img/logo.png" href="/index.html" alt="" id="menu-logo">
+                <span href="/index.html" id="menu-title">Recipes</span>
             </a>
         </div>
         <div class="menu">
-            <a href="#" class="menu-el" id="menu-1">Chi siamo</a>
-            <a href="#" class="menu-el" id="menu-2">Ricette</a>
+            <a href="/about.html" class="menu-el link" id="menu-1">Chi siamo</a>
+            <a class="menu-el" id="menu-2">Ricette</a>
             <div class="submenu inactive">
-                <a href="#" class="submenu-el" id="submenu-1">Primi</a>
-                <a href="#" class="submenu-el" id="submenu-2">Secondi</a>
-                <a href="#" class="submenu-el" id="submenu-3">Dessert</a>
+                <a href="#" class="submenu-el link" id="submenu-1">Primi</a>
+                <a href="#" class="submenu-el link" id="submenu-2">Secondi</a>
+                <a href="#" class="submenu-el link" id="submenu-3">Dessert</a>
             </div>
-            <a href="#" class="menu-el" id="menu-3">Contattaci</a>
+            <a href="/contact.html" class="menu-el link" id="menu-3">Contattaci</a>
         </div>
         <div class="contact-box">
             <div class="contacts">
@@ -45,7 +45,7 @@
                 </a>
                 <a class="contact" href="mailto:retini@open2b.com">
                     <i class="fas fa-phone menu-i"></i>
-                    <span class="contact-text">39 351-955-9131</span>
+                    <span class="contact-text">+39 351-955-9131</span>
                 </a>
             </div>
         </div>
@@ -53,7 +53,7 @@
 
 
     <div class="content">
-        <!--Qui vengono innestate le pagine-->
+        {{ Component.Run(Res, nil, nil) }}
     </div>
 
     <script src="https://kit.fontawesome.com/0605c113c8.js" crossorigin="anonymous"></script>

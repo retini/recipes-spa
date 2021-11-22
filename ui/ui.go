@@ -43,33 +43,6 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 		urlPath += "index.html"
 	}
 
-	// Controlla se la richiesta è arrivata da javascript (il tal caso possiede
-	// il cookie from-js).
-	isFromJs := false
-	for _, cookie := range req.Cookies() {
-		if cookie.Name == "is-from-js" {
-			isFromJs = true
-		}
-	}
-
-	// Se la richiesta non è arrivata da javascript, allora l'utente non è
-	// dentro all'applicazione, quindi va inviato l'intero layout insieme ad
-	// initializer.js e non il singolo componente da innestare.
-	if !isFromJs {
-		fsys := os.DirFS("ui/assets")
-		template, err := scriggo.BuildTemplate(fsys, "layout.html", nil)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		err = template.Run(res, nil, nil)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		return
-	}
-
 	// Prendi la parte finale della URL, ovvero quella corrispondente al file.
 	var _, fileName = path.Split(urlPath)
 
@@ -87,7 +60,7 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 
 		// Se non esiste alcun metodo con quel nome, allora restituisci una
 		// risposta 404. NOTA: ESSENDO GIà STATO CARICATO IL LAYOUT, SE IL
-		// METODO NON ESISTE DOBBIAMO COMUNQUE PASSARGLI UN COMPONENTE CHE DICA
+		// METODO NON ESISTE DOBBIAMO COMUNQUE PASSARGLI UN COMPONENTE CHE INVII
 		// IL MESSAGGIO 404 ALL'UTENTE.
 		if !method.IsValid() {
 			http.NotFound(res, req)
@@ -113,7 +86,7 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		// Se la variabile tags contiene dei valori, costruisci un template
+		// Se la variabile tags contiene dei valori, costruisci un componente
 		// Scriggo con quei valori.
 		if tags != nil {
 
@@ -127,19 +100,59 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 				},
 			}
 
-			// Costruisci un template, cercando il file html con lo stesso nome
-			// del file richiesto nella URL e passandogli i tags come variabili
-			// globali.
-			template, err := scriggo.BuildTemplate(fsys, fileName, &opt)
+			// Costruisci un componente, cercando il template html con lo stesso
+			// nome del file richiesto nella URL e passandogli i tags come
+			// variabili globali.
+			component, err := scriggo.BuildTemplate(fsys, fileName, &opt)
 			if err != nil {
 				log.Fatal(err)
 				return
 			}
-			err = template.Run(res, nil, nil)
-			if err != nil {
-				log.Fatal(err)
-				return
+
+			// Controlla se la richiesta è arrivata da javascript (in tal caso possiede
+			// la query is-from-js).
+			var isFromJs bool
+			q := req.URL.Query().Get("is-from-js")
+			if q == "" {
+				isFromJs = false
+			} else {
+				isFromJs = true
 			}
+
+			// Se la richiesta non è arrivata da javascript, allora l'utente non
+			// è dentro all'applicazione, quindi invia anche l'intero layout e
+			// passa come opzione il sottomponente, il quale verrà eseguito
+			// dall'interno del layout.
+			if !isFromJs {
+				fsys := os.DirFS("ui/assets")
+				opt := scriggo.BuildOptions{
+					Globals: native.Declarations{
+						"Component": &component,
+						"Res":       &res,
+					},
+				}
+				template, err := scriggo.BuildTemplate(fsys, "layout.html", &opt)
+				if err != nil {
+					log.Fatal(err)
+					return
+				}
+				err = template.Run(res, nil, nil)
+				if err != nil {
+					log.Fatal(err)
+					return
+				}
+
+				// Altrimenti, se la richiesta è arrivata da JS, invia
+				// soltanto il componente, il quale verrà innestato dentro la
+				// pagina da javascript-.
+			} else {
+				err = component.Run(res, nil, nil)
+				if err != nil {
+					log.Fatal(err)
+					return
+				}
+			}
+			return
 		}
 
 		// Se invece il suffisso del file richiesto termina con .json, allora
@@ -164,7 +177,7 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 		var method = reflect.ValueOf(script).MethodByName(methodName)
 
 		// Se non esiste alcun metodo che corrisponde al nome del file
-		// richiesto, restituisci uno status 404.
+		// richiesto, restituisci uno status 404. Ricordati di inviare il componente 404.
 		if !method.IsValid() {
 			http.NotFound(res, req)
 			return
@@ -208,7 +221,7 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 	} else {
 		// Se il file richiesto non termina con .html o .json allora la
 		// richiesta non può essere soddisfatta, quindi restituisci uno status
-		// 404.
+		// 404. NOTA: anche qui andrebbe inviato il componente 404.
 		http.NotFound(res, req)
 	}
 }
