@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'bukhari';
+    src: url('/fonts/bukhari_script-webfont.woff2') format('woff2'),
+         url('/fonts/bukhari_script-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bukhari_alternates';
+    src: url('/fonts/bukhariscriptalternates-webfont.woff2') format('woff2'),
+         url('/fonts/bukhariscriptalternates-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

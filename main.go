@@ -34,7 +34,9 @@ func main() {
 	// <root>/ui/assets + /css/base.css.
 	mux.Handle("/css/", fs)
 	mux.Handle("/js/", fs)
+	mux.Handle("/img/", fs)
+	mux.Handle("/fonts/", fs)
 
-	// Avvia il server
+	// Avvia il server.
 	httpServer.ListenAndServe()
 }
