@@ -22,7 +22,7 @@ html {
     position: fixed;
     left: 0px;
     top: 0px;
-    background-color: transparent;
+    background-color: var(--primary-bg);
     width: 100%;
     height: 120px;
     display: flex;
@@ -256,17 +256,23 @@ input.quantity {
     width: 40%;
 }
 
-input.form-submit {
+.form-submit {
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-family: "alyssum";
+    color: white;
+    outline: none!important;
     background-color: var(--dark-orange);
     box-shadow: none;
     border: 4px solid #e5910091;
     cursor: pointer;
     width: 40%;
     transition-duration: .3s;
-    margin-top: 20px;
+    margin: 20px auto;
+    display: block;
 }
 
-input.form-submit:hover {
+.form-submit:hover {
     width: 80%;
 }
 
@@ -279,4 +285,141 @@ input.form-submit:hover {
     font-size: 18px;
 }
 
+.results {
+    width: 1200px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0px auto;
+}
 
+.card {
+    width: 350px;
+    height: 400px;
+    margin: 20px 20px;
+    background-color: var(--secondary-bg);
+    border: 8px solid var(--primary-bg);
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 1px #262834;
+    display: flex;
+    flex-flow: column nowrap;
+    transition-duration: .3s;
+}
+
+
+.card-img {
+    background-image: url("https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/658A0A74-039A-487C-A07A-CAAF61B4615D/Derivates/A230DF28-60DF-429D-ABDA-96ED64E9EE10.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 45%;
+    width: 100%;
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+.card-description {
+    height: 45%;
+    width: 100%;
+    padding: 10px 10px;
+}
+
+.actions-box {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.action {
+    width: 50%;
+    color: var(--dark-orange);
+    font-size: 30px;
+    text-align: center;
+    border-top: 4px solid var(--primary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition-duration: .3s;
+    cursor: pointer;
+}
+
+.action:hover {
+    background-color: var(--primary-bg);
+}
+
+.favorites {
+    border-right: 2px solid var(--primary-bg);
+}
+
+.share {
+    border-left: 2px solid var(--primary-bg);
+}
+
+.card-title {
+    color: var(--dark-orange);
+    font-family: "alyssum";
+}
+
+.card-description {
+    color: #aaa;
+}
+
+.search-btn {
+    width: 100px;
+    height: 100px;
+    background-color: var(--dark-orange);
+    position: fixed;
+    bottom: 50px;
+    right: 60px;
+    z-index: 999999;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    color: white;
+    border: 5px solid #ad6d00;
+    box-shadow: 0px 0px 10px 1px #262834;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #282931f5;
+    z-index: 9999;
+    transition-property: clip-path;
+    transition-duration: 1.0s;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.closed {
+    clip-path: circle(0.0% at 100% 100%);
+}
+
+.opened {
+    clip-path: circle(141.4% at 100% 100%);
+}
+
+.embedded-form-box {
+    width: 700px;
+    text-align: center;
+    padding: 30px 50px;
+    height: 270px;
+    background-color: var(--secondary-bg);
+    border: 8px solid var(--primary-bg);
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 1px #262834;
+}
+
+.embedded-title {
+    margin-top: -80px;
+}

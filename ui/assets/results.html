@@ -1,0 +1,40 @@
+<div class="results">
+    {% for recipe in Tags["recipes"].([]Recipe) %}
+        <div class="card">
+            <div class="card-img" style="background-image: url('{{ recipe.Recipe.Image }}');"></div>
+            <div class="card-description">
+                <p class="card-title">{{ recipe.Recipe.Label }}</p>
+                <p class="card-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Duis sed ex vitae est euismod congue. Mauris eget mi sagittis, tincidunt odio ac.</p>
+            </div>
+            <div class="actions-box">
+                <div class="action favorites"><i class="fas fa-star"></i></div>
+                <div class="action share"><i class="fas fa-share"></i></div>
+            </div>
+        </div>
+    {% end %}
+</div>
+
+<div class="overlay closed">
+    <h1 class="embedded-title">Cerca le tue ricette preferite</h1>
+    <div class="form-box">
+        <form class="search" method="GET">
+            <input id="ingredient" name="ingredient" class="ingredient" type="text" placeholder="ingrediente">
+            <input class="tags" type="text" placeholder="tags">
+            <input id="quantity" name="quantity" class="quantity" type="text" placeholder="N° di ricette">
+            <a class="form-submit ajax-search" href="/results.html">Cerca</a>
+        </form>
+    </div>
+</div>
+
+<div class="search-btn">
+    <i class="fas fa-search"></i>
+</div>
+
+<script>
+    overlay = document.querySelector("div.overlay")
+    searchBtn = document.querySelector("div.search-btn");
+    searchBtn.addEventListener("click", () => {
+        overlay.classList.toggle("opened");
+    })
+</script>

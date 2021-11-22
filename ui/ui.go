@@ -96,7 +96,8 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 			// Costruisci un'istanza di scriggo.BuildOptions con i tags.
 			opt := scriggo.BuildOptions{
 				Globals: native.Declarations{
-					"Tags": &tags,
+					"Tags":   &tags,
+					"Recipe": reflect.TypeOf(Recipe{}),
 				},
 			}
 

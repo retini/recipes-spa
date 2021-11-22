@@ -6,7 +6,7 @@ buttons.forEach((btn) => {
 
 window.addEventListener("popstate", getComponent, false);
 
-function getComponent(e) {
+async function getComponent(e) {
     // previeni il ricaricamento della pagina.
     e.preventDefault();
     contentDiv = document.querySelector("div.content");
@@ -19,7 +19,7 @@ function getComponent(e) {
         .catch(error => console.log(error))
         return
     }
-    // prendi il link del bottone .
+    // prendi il link del bottone.
     href = e.target.getAttribute("href");
     if (href == window.location.pathname) {
         return;
@@ -29,8 +29,14 @@ function getComponent(e) {
     currentUrl = window.location.hostname + href;
     // effettua la richiesta con la query is-from-js, la quale è usata dal
     // server per capire se la richiesta arriva da javascript.
-    fetch(currentUrl+"?is-from-js=true", {credentials: "include"})
-    .then(response => response.text())
-    .then(html => contentDiv.innerHTML = html)
-    .catch(error => console.log(error))
+    res = await fetch(currentUrl+"?is-from-js=true", {credentials: "include"});
+    html = await res.text();
+    contentDiv.innerHTML = html;
+    
+    // registra i metodi di nuovo, in modo da coprire anche gli eventuali nuovi
+    // elementi ottenuti da componenti.
+    buttons = document.querySelectorAll(".link");
+    buttons.forEach((btn) => {
+        btn.addEventListener("click", getComponent, false);
+    })
 }

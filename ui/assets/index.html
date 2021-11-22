@@ -1,9 +1,9 @@
 <h1>{{ Tags["title"] }}</h1>
 <div class="form-box">
-    <form action="/results.html" method="GET">
-        <input class="ingredient" type="text" placeholder="ingrediente">
+    <form class="search" method="GET">
+        <input id="ingredient" name="ingredient" class="ingredient" type="text" placeholder="ingrediente">
         <input class="tags" type="text" placeholder="tags">
-        <input class="quantity" type="text" placeholder="N° di ricette">
-        <input class="form-submit" type="submit" value="cerca">
+        <input id="quantity" name="quantity" class="quantity" type="text" placeholder="N° di ricette">
+        <a class="form-submit ajax-search" href="/results.html">Cerca</a>
     </form>
 </div>
