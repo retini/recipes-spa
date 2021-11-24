@@ -1,0 +1,16 @@
+.logo-box {
+    width: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 100px;
+}
+
+.contact-box {
+    width: 25%;
+}
+
+.header {
+    justify-content: space-between;
+}

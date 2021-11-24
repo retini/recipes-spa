@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <!--Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +16,8 @@
 
     <!--Stylesheets-->
     <link rel="stylesheet" href="/css/base.css">
-    <title>Recipes | Find delicious recipes</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login | Recipes</title>
 </head>
 <body>
     <div class="header">
@@ -26,16 +26,6 @@
                 <img src="/img/logo.png" href="/index.html" alt="" id="menu-logo">
                 <span href="/index.html" id="menu-title">Recipes</span>
             </a>
-        </div>
-        <div class="menu">
-            <a href="/about.html" class="menu-el link" id="menu-1">Chi siamo</a>
-            <a class="menu-el" id="menu-2">Ricette</a>
-            <div class="submenu inactive">
-                <a href="#" class="submenu-el link" id="submenu-1">Primi</a>
-                <a href="#" class="submenu-el link" id="submenu-2">Secondi</a>
-                <a href="#" class="submenu-el link" id="submenu-3">Dessert</a>
-            </div>
-            <a href="/contact.html" class="menu-el link" id="menu-3">Contattaci</a>
         </div>
         <div class="contact-box">
             <div class="contacts">
@@ -49,17 +39,21 @@
                 </a>
             </div>
         </div>
-        <a class="logout" href="/logout.html">
-            <i class="fas fa-sign-out-alt"></i>
-        </a>
     </div>
-
 
     <div class="content">
-        {{ Component.Run(Res, nil, nil) }}
+        <h1 class="title">Effettua il login</h1>
+        <form class="form-box" method="POST">
+            <input type="text" placeholder="Utente" name="user" id="user">
+            <input type="password" placeholder="Password" name="password" id="password">
+            <a class="form-submit ajax-login" href="/login.html">Login</a>
+        </form>
+
+        <div class="error-msg closed">Username o password errati</div>
     </div>
 
-    <script src="https://kit.fontawesome.com/0605c113c8.js" crossorigin="anonymous"></script>
+    
     <script src="/js/initializer.js"></script>
+    <script src="https://kit.fontawesome.com/0605c113c8.js" crossorigin="anonymous"></script>
 </body>
 </html>

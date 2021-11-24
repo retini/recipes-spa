@@ -30,6 +30,7 @@ type Recipe struct {
 }
 
 func (p *Page) Results(res http.ResponseWriter, req *http.Request) Tags {
+	RedirectIfNotAuth(res, req)
 	ingredient := req.URL.Query().Get("ingredient")
 	if ingredient == "" {
 		log.Print("must pass a valid ingredient")

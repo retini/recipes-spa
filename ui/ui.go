@@ -2,6 +2,7 @@ package ui
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -159,6 +160,10 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 		// Se invece il suffisso del file richiesto termina con .json, allora
 		// chiama il metodo di Script corrispondente per rispondere con del
 		// json.
+	} else if fileName == "login.json" {
+
+		login(res, req)
+
 	} else if strings.HasSuffix(fileName, ".json") {
 
 		// Nel dropshipper, il metodo POST era l'unico metodo consentito per
@@ -247,4 +252,27 @@ func pathToMethod(path string) string {
 		j++
 	}
 	return string(s[:j])
+}
+
+func login(res http.ResponseWriter, req *http.Request) {
+	dec := json.NewDecoder(req.Body)
+	var user, password string
+	err := dec.Decode(&user)
+	if err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	err = dec.Decode(&password)
+	if err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	res.Header().Set("Content-Type", "application/json")
+	if user != loginUser || password != loginPassword {
+		io.WriteString(res, "while(1);false")
+		return
+	}
+	ck, _ := newSecureCookie()
+	http.SetCookie(res, ck)
+	io.WriteString(res, "while(1);true")
 }

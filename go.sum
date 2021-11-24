@@ -1,4 +1,6 @@
 github.com/fsnotify/fsnotify v1.5.1/go.mod h1:T3375wBYaZdLLcVNkcVbzGHY7f1l/uK5T5Ai1i3InKU=
+github.com/gorilla/securecookie v1.1.1 h1:miw7JPhV+b/lAHSXz4qd/nN9jRiAFV5FwjeKyCS8BvQ=
+github.com/gorilla/securecookie v1.1.1/go.mod h1:ra0sb63/xPlUeL+yeDciTfxMRAA+MP+HVt/4epWDjd4=
 github.com/open2b/scriggo v0.53.4 h1:oVmAwcLZHpz0bulnyJTR0ZJviCT2aDWRSzUqLoEhtYk=
 github.com/open2b/scriggo v0.53.4/go.mod h1:BT/Y/AXiydiLxhbfupynMyF0n2L9/qB57jTbu5+fgh4=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
