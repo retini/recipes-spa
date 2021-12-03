@@ -49,6 +49,7 @@ async function ajaxAuth(e) {
     var logged = await callServer("login", [u, p]);
     if (logged) {
         window.location = "index.html";
+        return;
     }
     var errorBox = document.querySelector(".error-msg");
     errorBox.classList.add("opened");
@@ -60,12 +61,12 @@ async function ajaxAuth(e) {
 }
 
 function setListeners() {
-    buttons = document.querySelectorAll(".link");
+    let buttons = document.querySelectorAll(".link");
     buttons.forEach(btn => {
         btn.addEventListener("click", ajaxRedirect, false);
     })
     window.addEventListener("popstate", lastComponent, false);
-    formBtn = document.querySelector(".ajax-search");
+    let formBtn = document.querySelector(".ajax-search");
     if (formBtn) {
         formBtn.addEventListener("click", ajaxSubmit, false);
     }
@@ -76,6 +77,17 @@ function setListeners() {
             overlay.classList.toggle("opened");
         })
     }
+    let logoutBtn = document.querySelector(".logout");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", ajaxLogout, false);
+    }
+}
+
+async function ajaxLogout(e) {
+    // call logout.json wich remove auth cookie
+    await fetch("logout.json");
+    // redirect to login with window replace
+    window.location = "login.html";
 }
 
 function ajaxSubmit(e) {

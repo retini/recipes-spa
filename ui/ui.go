@@ -47,6 +47,28 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 	// Prendi la parte finale della URL, ovvero quella corrispondente al file.
 	var _, fileName = path.Split(urlPath)
 
+	if fileName != "login.html" && fileName != "login.json" {
+		cookie, err := req.Cookie("auth")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				http.Redirect(res, req, "/login.html", http.StatusMovedPermanently)
+				return
+			}
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		valid, err := cookieIsValid(cookie)
+		if err != nil {
+			http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+			log.Print(err)
+			return
+		}
+		if !valid {
+			http.Redirect(res, req, "/login.html", http.StatusMovedPermanently)
+			return
+		}
+	}
+
 	// Se il suffisso del file richiesto è HTML, allora chiama il metodo di Page
 	// associato al file richiesto dalla URL. Il metodo restituirà i tags
 	// contenenti le variabili da usare nel template scriggo.
@@ -157,12 +179,13 @@ func UiHandler(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		// Se invece il suffisso del file richiesto termina con .json, allora
-		// chiama il metodo di Script corrispondente per rispondere con del
-		// json.
 	} else if fileName == "login.json" {
 
 		login(res, req)
+
+	} else if fileName == "logout.json" {
+
+		logout(res, req)
 
 	} else if strings.HasSuffix(fileName, ".json") {
 
@@ -254,6 +277,9 @@ func pathToMethod(path string) string {
 	return string(s[:j])
 }
 
+// funzione intermedia per le richieste js a login.json. Abbiamo deciso di non
+// mettere login e logout come metodi di Script, perché settano dei cookies
+// (caso eccezionale).
 func login(res http.ResponseWriter, req *http.Request) {
 	dec := json.NewDecoder(req.Body)
 	var user, password string
@@ -272,7 +298,23 @@ func login(res http.ResponseWriter, req *http.Request) {
 		io.WriteString(res, "while(1);false")
 		return
 	}
-	ck, _ := newSecureCookie()
+	ck, _, err := newSecureCookie()
+	if err != nil {
+		http.Error(res, "Internal Server Error", http.StatusInternalServerError)
+		log.Print(err)
+		return
+	}
 	http.SetCookie(res, ck)
 	io.WriteString(res, "while(1);true")
+}
+
+// funzione intermedia per le richieste js a logout.html.
+func logout(res http.ResponseWriter, req *http.Request) {
+	ck := &http.Cookie{
+		Name:   "auth",
+		MaxAge: -1,
+	}
+	http.SetCookie(res, ck)
+	res.Header().Set("Cache-Control", "no-cache")
+	io.WriteString(res, "cookie removed")
 }

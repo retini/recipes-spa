@@ -457,8 +457,10 @@ input.quantity {
     border: 5px solid var(--primary-border);
     transition-property: transform;
     transition-duration: .5s;
+    cursor: pointer;
 }
 
 .logout:hover {
     transform: rotate(+180deg);
 }
+
